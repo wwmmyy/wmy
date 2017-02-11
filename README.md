@@ -77,7 +77,7 @@ tags:
 #### 侧边栏
 
 看右边:
-![](https://raw.githubusercontent.com/qiubaiying/qiubaiying.github.io/master/img/readme-side.png)
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1486788293483&di=b5570fbeea6e6d74d8779d3124883bcc&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F141%2Fd%2F14.jpg)
 
 设置是在 `_config.yml`文件里面的`Sidebar settings`那块。
 
