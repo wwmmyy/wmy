@@ -1,18 +1,18 @@
 # Site settings
-title: BY Blog
-SEOTitle: wmy的博客 | BY Blog
-header-img: img/post-bg-rwd.jpg
+title: wmy Blog
+SEOTitle: wmy的博客 | WMY Blog
+header-img: img/top_bg.jpg
 email: qiubaiying@gmail.com
 description: "每个胜利背后都有许多尝试"
 keyword: "android framework alarmManagerService Doze "
-url: "https://wmy.github.io"          # your host, for absolute URL
+url: "https:/wwmmyy.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "It takes a great man <br> to be a good instener"
-sidebar-avatar: img/avatar-by.JPG      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: img/post-bg-2015.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
@@ -21,7 +21,7 @@ RSS: false
 weibo_username:     wwmmyy
 zhihu_username:     wwmmyy
 github_username:    wwmmyy
-facebook_username:  baiying.qiu.7
+facebook_username:  wwmmyy
 #jianshu_username:   qiubaiying
 #twitter_username:   qiubaiying
 
