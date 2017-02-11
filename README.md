@@ -1,9 +1,8 @@
-# BY Blog 模板
+# WMY Blog 模板
 
-这个README我直接拿[Hux](https://github.com/Huxpro/huxpro.github.io)的来修改了。😅
-### [我的博客在这里 &rarr;](http://qiubaiying.github.io)
+### [我的博客在这里 &rarr;](http://wwmmyy.github.io)
 
-![](https://raw.githubusercontent.com/qiubaiying/qiubaiying.github.io/master/img/readme-home.png)
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1486788293483&di=b5570fbeea6e6d74d8779d3124883bcc&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F141%2Fd%2F14.jpg)
 
 
 ## 使用
