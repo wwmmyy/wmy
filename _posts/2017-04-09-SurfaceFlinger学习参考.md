@@ -1843,7 +1843,71 @@ surfaceFlinger有2个记录layer变化的全局变量
 	State mCurrentState;
 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
 这个变量记录了所有的layer。
-我们来看下 
+我们来看下一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下  一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下  一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
+这个变量记录了所有的layer。
+我们来看下
 
 
 
