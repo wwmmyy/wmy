@@ -3,19 +3,19 @@ layout:     post
 title:      SurfaceFlinger 2017
 subtitle:    SurfaceFlinger, WMY Blog
 date:       2017-04-09
-author:     WMY
-header-img: img/05.jpg
+author:     BY
+header-img: img/01.jpg
 catalog: true
 tags:
     - 工作
 ---   
 
-#android Gui系统之SurfaceFlinger #
+# android Gui系统之SurfaceFlinger 
 
 
-本文转自:【Joyfulmath---A Software Designer 博客】
+**本文转自:【Joyfulmath---A Software Designer 博客】**
 
-原文地址：http://blog.csdn.net/jinzhuojun/article/details/17293325
+**原文地址：http://blog.csdn.net/jinzhuojun/article/details/17293325**
 
 
 
@@ -36,7 +36,7 @@ android GUI大体分为4大块。
 我们先来讲SurfaceFlinger
 
 
-## 1.OpenGL & OpenGL ES ##
+## 1.OpenGL & OpenGL ES  
 
 OPenGL ES 是android系统绘画的基础。关于OpenGL部分，可以百度了解下。
 
@@ -56,30 +56,30 @@ fb 负责打开framebuffer，提供接口操作。gralloc负责管理帧缓冲�
 
 5）SurfaceFlinger持有一个成员数组mDisplays来支持各种显示设备。DisplayDevices在初始化的时候调用EGL来搭建OpenGL的环境。
 
-## 2.Android的硬件接口HAL  ##
+## 2.Android的硬件接口HAL  
 
 HAL需要满足android系统和厂商的要求
 
-### 2.1硬件接口的抽象 ### 
+### 2.1硬件接口的抽象 
 
 从面向对象角度来讲，接口的概念就是由C++非常容易实现，但是HAL很多代码是C语言描述的。
 这就需要一种技巧来实现面向对象。
 定义一种结构，子类的成员变量第一个类型是父类的结构就可以了。抽象方法可以用函数指针来实现。
 其实这个就是C++多态实现的基本原理，具体可参考《深入理解C++对象模型》
 
-### 2.2接口的稳定性 ### 
+### 2.2接口的稳定性 
 
 Android已经把各个硬件都接口都统一定义在：
 
 libhardware/include/hardware/ 具体代码可以参考：https://github.com/CyanogenMod/android_hardware_libhardware/tree/cm-12.0/include/hardware
 
-## 3.Android显示设备：Gralloc & FrameBuffer  ##
+## 3.Android显示设备：Gralloc & FrameBuffer 
 
 FrameBuffer是linux环境下显示设备的统一接口。从而让用户设备不需要做太多的操作，就可以适配多种显示设备。
 
 FramwBuffer本质上就是一套接口。android系统不会直接操作显示驱动，而通过HAL层来封装。而HAL中操作驱动的模块就是gralloc。
 
-### 3.1Gralloc模块的加载 ### 
+### 3.1Gralloc模块的加载 
 
 gralloc通过FrameBufferNativeWindow 来加载的：
 	
@@ -183,6 +183,7 @@ libhardware\include\hardware\hardware.h
 	            struct hw_device_t** device);
 	
 	} hw_module_methods_t;
+
 只有一个open方法，也就是所有的厂商都需要实现开启设备的方法。
 
 看下fb的打开的代码：
@@ -255,9 +256,9 @@ fbDev负责的是主屏幕，grDev负责图形缓冲去的分配和释放。
 
 所以FrameBufferNativeWindow控制这SurfaceFlinger的基础。
 
-## 4.FrameBufferNativeWindow  ##
+## 4.FrameBufferNativeWindow 
 
-### 4.1FramebufferNativeWindow ### 
+### 4.1FramebufferNativeWindow  
 
 在OpenGL中，我们不断提及本地窗口的概念，在Android中，native window一共由2个。
 一个是面向管理者（SurfaceFlinger）的 FramebufferNativeWindow
@@ -297,7 +298,7 @@ FramebufferNativeWindow的构造函数上面已经贴出来了，进一步分析
 
 如果先把图片放在一个缓冲buffer中，待全部画好后，把buffer直接显示在屏幕上，这就是双缓冲技术。
 
-### 4.2dequeuebuffer ### 
+### 4.2dequeuebuffer 
 
 	int FramebufferNativeWindow::dequeueBuffer(ANativeWindow* window, 
 	        ANativeWindowBuffer** buffer, int* fenceFd)
@@ -335,7 +336,7 @@ FramebufferNativeWindow的构造函数上面已经贴出来了，进一步分析
 
 4）如果没有可用的缓冲区，等待bufferqueue释放。一旦获取后，可用buffer就自减
 
-## 5.Surface ##
+## 5. Surface 
 
 Surface是另一个本地窗口，主要和app这边交互。注意：app层java代码无法直接调用surface，只是概念上surface属于app这一层的。
 
@@ -370,7 +371,7 @@ surface虽然是为app层服务的，但是本质上还是由SurfaceFlinger来�
 
 SurfaceFlinger怎么创建和管理surface，需要通过BufferQueue，将在下一篇讨论。
 
-## 6 BufferQueue ##
+## 6 BufferQueue 
 
 BufferQueue是SurfaceFlinger管理和消费surface的中介
 
@@ -380,7 +381,7 @@ BufferQueue是SurfaceFlinger管理和消费surface的中介
 
 应用和SurfaceFlinger 如何互斥共享资源的访问？
 
-### 6.1 Buffer的状态 ###
+### 6.1 Buffer的状态 
  
 
 	const char* BufferSlot::bufferStateName(BufferState state) {
@@ -430,7 +431,7 @@ bufferqueue里面就是comsumerlistener，当有可以使用的buffer以后，�
 	enum { NUM_BUFFER_SLOTS = 64 };
 
 
-### 6.2 Buffer内存的出处 ### 
+### 6.2 Buffer内存的出处 
 
 既然producer是主动操作，所以如果dequeue的时候，已经获取了内存，后面的操作也就不需要分配内存了：
 
@@ -699,7 +700,7 @@ step2：释放不需要的buffer，并且统计已分配的内存。
 
 这样buffer对应的内存就是在producer，dequeue操作的时候分配内存的。（if need）
 
-### 6.3应用程序和BufferQueue的关系 ### 
+### 6.3应用程序和BufferQueue的关系 
 
 首先看一张surface各类之间的关系：
 
@@ -796,7 +797,7 @@ producer跟踪源代码可以看到：
 3）App & SurfaceFlinger都通过bufferQueue来分配和使用缓冲区，所以互斥操作是由BufferQueue来实现。
 
 
-## 7.SurfaceFlinger ##
+## 7.SurfaceFlinger 
 
 SurfaceFlinger在前面的篇幅了，多有涉及。
 
@@ -812,7 +813,7 @@ SurfaceFlinger主要分为4个部分
 
 4）Vsync信号的处理
 
-### 7.1黄油计划 ###
+### 7.1黄油计划 
 
 就是给android系统，图上一层“黄油”。我们来看看andorid是怎么给SurfaceFlinger涂上这层黄油的。
 
@@ -873,7 +874,7 @@ Buffer已经准备好了第二帧，而显示器出现了问题，1/3的内容�
 所以多缓冲区就是，就是可以根据系统的实际内存情况，来判断buffer的数量。
 
 
-### 7.2 SurfaceFlinger的启动 ###
+### 7.2 SurfaceFlinger的启动 
 
 SurfaceFlinger 我们前面已经说了，它其实就是一个service。
 
@@ -948,7 +949,7 @@ SurfaceFlinger 我们前面已经说了，它其实就是一个service。
 
 
 
-### 7.3 client ###
+### 7.3 client 
 
 任何有UI界面App都在surfaceflinger里面有client。
 
@@ -1026,9 +1027,9 @@ SurfaceFlinger 我们前面已经说了，它其实就是一个service。
 	}
 
 
-## 8.Vsync ##
+## 8.Vsync 
 
-### 8.1 Vsync概论 ###
+### 8.1 Vsync概论 
 
 VSYNC（Vertical Synchronization）是一个相当古老的概念，对于游戏玩家，它有一个更加大名鼎鼎的中文名字—-垂直同步。
 
@@ -1037,7 +1038,7 @@ VSYNC（Vertical Synchronization）是一个相当古老的概念，对于游戏
 因为LCD根本就没有垂直扫描的这种东西，因此这个名字本身已经没有意义。但是基于历史的原因，这个名称在图形图像领域被沿袭下来。
 在当下，垂直同步的含义我们可以理解为，使得显卡生成帧的速度和屏幕刷新的速度的保持一致。举例来说，如果屏幕的刷新率为60Hz，那么生成帧的速度就应该被固定在1/60 s。
 
-### 8.2 VSync信号的产生和分发 ###
+### 8.2 VSync信号的产生和分发 
 
 VSync信号的产生在android_frameworks_native\services\surfaceflinger\DisplayHardware\HWComposer.cpp里面定义：
 
@@ -1202,7 +1203,7 @@ VSync信号的产生在android_frameworks_native\services\surfaceflinger\Display
 
 如果需要，启动VSyncThread线程来开启软件模拟。
 
-####8.2.1硬件产生####
+#### 8.2.1硬件产生 
 
 	mHwc->registerProcs(mHwc, &mCBContext->procs);
 hwc会产生回调：procs.vsync & procs.invalidate 信号。
@@ -1246,7 +1247,7 @@ Yes，handler就是SurfaceFlinger，对嘛。SurfaceFlinger就是Surface合成�
                        private HWComposer::EventHandler
 
 
-####8.2.2软件模拟信号####
+#### 8.2.2软件模拟信号 
 
 	bool HWComposer::VSyncThread::threadLoop() {
 	    { // scope for lock
@@ -1299,7 +1300,7 @@ Yes，handler就是SurfaceFlinger，对嘛。SurfaceFlinger就是Surface合成�
 	void HWComposer::VSyncThread::setEnabled(bool enabled) 
 
 
-### 8.3 SurfaceFlinger处理Vsync信号 ###
+### 8.3 SurfaceFlinger处理Vsync信号 
 
 在4.4以前，Vsync的处理通过EventThread就可以了。但是KK再次对这段逻辑进行细化和复杂化。Google真是费劲心思为了提升性能。
 
@@ -1440,8 +1441,8 @@ enableHardwareVsync &disableHardwareVsync在干什么？
 
 然后搞了2个延时，这样就不会有问题。对应vsyncSrc（绘图延时） & sfVsyncSrc（合成延时）
 
-####8.3.1 EventThread####
-	
+#### 8.3.1 EventThread 
+
 	bool EventThread::threadLoop() {
 	    DisplayEventReceiver::Event event;
 	    Vector< sp<EventThread::Connection> > signalConnections;
@@ -1530,384 +1531,1150 @@ SurfaceFlinger是在Vsync来临之际准备数据然后刷新，还是平常就�
 	}
 
 
-####8.3.2handleMessageTransaction####
+#### 8.3.2handleMessageTransaction 
 
  handleMessageTransaction在简单判断后直接调用handlerTransaction。
 
 可以看到里面的handleTransactionLocked才是代码真正处理的地方。 
 		
-		void SurfaceFlinger::handleTransactionLocked(uint32_t transactionFlags)
-		{
-		    const LayerVector& currentLayers(mCurrentState.layersSortedByZ);
-		    const size_t count = currentLayers.size();
-		
-		    /*
-		     * Traversal of the children
-		     * (perform the transaction for each of them if needed)
-		     */
-		
-		    if (transactionFlags & eTraversalNeeded) {
-		        for (size_t i=0 ; i<count ; i++) {
-		            const sp<Layer>& layer(currentLayers[i]);
-		            uint32_t trFlags = layer->getTransactionFlags(eTransactionNeeded);
-		            if (!trFlags) continue;
-		
-		            const uint32_t flags = layer->doTransaction(0);
-		            if (flags & Layer::eVisibleRegion)
-		                mVisibleRegionsDirty = true;
-		        }
-		    }
-		
-		    /*
-		     * Perform display own transactions if needed
-		     */
-		
-		    if (transactionFlags & eDisplayTransactionNeeded) {
-		        // here we take advantage of Vector's copy-on-write semantics to
-		        // improve performance by skipping the transaction entirely when
-		        // know that the lists are identical
-		        const KeyedVector<  wp<IBinder>, DisplayDeviceState>& curr(mCurrentState.displays);
-		        const KeyedVector<  wp<IBinder>, DisplayDeviceState>& draw(mDrawingState.displays);
-		        if (!curr.isIdenticalTo(draw)) {
-		            mVisibleRegionsDirty = true;
-		            const size_t cc = curr.size();
-		                  size_t dc = draw.size();
-		
-		            // find the displays that were removed
-		            // (ie: in drawing state but not in current state)
-		            // also handle displays that changed
-		            // (ie: displays that are in both lists)
-		            for (size_t i=0 ; i<dc ; i++) {
-		                const ssize_t j = curr.indexOfKey(draw.keyAt(i));
-		                if (j < 0) {
-		                    // in drawing state but not in current state
-		                    if (!draw[i].isMainDisplay()) {
-		                        // Call makeCurrent() on the primary display so we can
-		                        // be sure that nothing associated with this display
-		                        // is current.
-		                        const sp<const DisplayDevice> defaultDisplay(getDefaultDisplayDevice());
-		                        defaultDisplay->makeCurrent(mEGLDisplay, mEGLContext);
-		                        sp<DisplayDevice> hw(getDisplayDevice(draw.keyAt(i)));
-		                        if (hw != NULL)
-		                            hw->disconnect(getHwComposer());
-		                        if (draw[i].type < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES)
-		                            mEventThread->onHotplugReceived(draw[i].type, false);
-		                        mDisplays.removeItem(draw.keyAt(i));
-		                    } else {
-		                        ALOGW("trying to remove the main display");
-		                    }
-		                } else {
-		                    // this display is in both lists. see if something changed.
-		                    const DisplayDeviceState& state(curr[j]);
-		                    const wp<IBinder>& display(curr.keyAt(j));
-		                    if (state.surface->asBinder() != draw[i].surface->asBinder()) {
-		                        // changing the surface is like destroying and
-		                        // recreating the DisplayDevice, so we just remove it
-		                        // from the drawing state, so that it get re-added
-		                        // below.
-		                        sp<DisplayDevice> hw(getDisplayDevice(display));
-		                        if (hw != NULL)
-		                            hw->disconnect(getHwComposer());
-		                        mDisplays.removeItem(display);
-		                        mDrawingState.displays.removeItemsAt(i);
-		                        dc--; i--;
-		                        // at this point we must loop to the next item
-		                        continue;
-		                    }
-		
-		                    const sp<DisplayDevice> disp(getDisplayDevice(display));
-		                    if (disp != NULL) {
-		                        if (state.layerStack != draw[i].layerStack) {
-		                            disp->setLayerStack(state.layerStack);
-		                        }
-		                        if ((state.orientation != draw[i].orientation)
-		                                || (state.viewport != draw[i].viewport)
-		                                || (state.frame != draw[i].frame))
-		                        {
-		#ifdef QCOM_BSP
-		                            int orient = state.orientation;
-		                            // Honor the orientation change after boot
-		                            // animation completes and make sure boot
-		                            // animation is shown in panel orientation always.
-		                            if(mBootFinished){
-		                                disp->setProjection(state.orientation,
-		                                        state.viewport, state.frame);
-		                                orient = state.orientation;
-		                            }
-		                            else{
-		                                char property[PROPERTY_VALUE_MAX];
-		                                int panelOrientation =
-		                                        DisplayState::eOrientationDefault;
-		                                if(property_get("persist.panel.orientation",
-		                                            property, "0") > 0){
-		                                    panelOrientation = atoi(property) / 90;
-		                                }
-		                                disp->setProjection(panelOrientation,
-		                                        state.viewport, state.frame);
-		                                orient = panelOrientation;
-		                            }
-		                            // Set the view frame of each display only of its
-		                            // default orientation.
-		                            if(orient == DisplayState::eOrientationDefault and
-		                                    state.frame.isValid()) {
-		                                qdutils::setViewFrame(disp->getHwcDisplayId(),
-		                                    state.frame.left, state.frame.top,
-		                                    state.frame.right, state.frame.bottom);
-		                            }
-		#else
-		                            disp->setProjection(state.orientation,
-		                                state.viewport, state.frame);
-		#endif
-		                        }
-		                        if (state.width != draw[i].width || state.height != draw[i].height) {
-		                            disp->setDisplaySize(state.width, state.height);
-		                        }
-		                    }
-		                }
-		            }
-		
-		            // find displays that were added
-		            // (ie: in current state but not in drawing state)
-		            for (size_t i=0 ; i<cc ; i++) {
-		                if (draw.indexOfKey(curr.keyAt(i)) < 0) {
-		                    const DisplayDeviceState& state(curr[i]);
-		
-		                    sp<DisplaySurface> dispSurface;
-		                    sp<IGraphicBufferProducer> producer;
-		                    sp<IGraphicBufferProducer> bqProducer;
-		                    sp<IGraphicBufferConsumer> bqConsumer;
-		                    BufferQueue::createBufferQueue(&bqProducer, &bqConsumer,
-		                            new GraphicBufferAlloc());
-		
-		                    int32_t hwcDisplayId = -1;
-		                    if (state.isVirtualDisplay()) {
-		                        // Virtual displays without a surface are dormant:
-		                        // they have external state (layer stack, projection,
-		                        // etc.) but no internal state (i.e. a DisplayDevice).
-		                        if (state.surface != NULL) {
-		                            configureVirtualDisplay(hwcDisplayId,
-		                                    dispSurface, producer, state, bqProducer,
-		                                    bqConsumer);
-		                        }
-		                    } else {
-		                        ALOGE_IF(state.surface!=NULL,
-		                                "adding a supported display, but rendering "
-		                                "surface is provided (%p), ignoring it",
-		                                state.surface.get());
-		                        hwcDisplayId = allocateHwcDisplayId(state.type);
-		                        // for supported (by hwc) displays we provide our
-		                        // own rendering surface
-		                        dispSurface = new FramebufferSurface(*mHwc, state.type,
-		                                bqConsumer);
-		                        producer = bqProducer;
-		                    }
-		
-		                    const wp<IBinder>& display(curr.keyAt(i));
-		                    if (dispSurface != NULL && producer != NULL) {
-		                        sp<DisplayDevice> hw = new DisplayDevice(this,
-		                                state.type, hwcDisplayId,
-		                                mHwc->getFormat(hwcDisplayId), state.isSecure,
-		                                display, dispSurface, producer,
-		                                mRenderEngine->getEGLConfig());
-		                        hw->setLayerStack(state.layerStack);
-		                        hw->setProjection(state.orientation,
-		                                state.viewport, state.frame);
-		                        hw->setDisplayName(state.displayName);
-		                        // When a new display device is added update the active
-		                        // config by querying HWC otherwise the default config
-		                        // (config 0) will be used.
-		                        int activeConfig = mHwc->getActiveConfig(hwcDisplayId);
-		                        if (activeConfig >= 0) {
-		                            hw->setActiveConfig(activeConfig);
-		                        }
-		                        mDisplays.add(display, hw);
-		                        if (state.isVirtualDisplay()) {
-		                            if (hwcDisplayId >= 0) {
-		                                mHwc->setVirtualDisplayProperties(hwcDisplayId,
-		                                        hw->getWidth(), hw->getHeight(),
-		                                        hw->getFormat());
-		                            }
-		                        } else {
-		                            mEventThread->onHotplugReceived(state.type, true);
-		                        }
-		                    }
-		                }
-		            }
-		        }
-		    }
-		
-		    if (transactionFlags & (eTraversalNeeded|eDisplayTransactionNeeded)) {
-		        // The transform hint might have changed for some layers
-		        // (either because a display has changed, or because a layer
-		        // as changed).
-		        //
-		        // Walk through all the layers in currentLayers,
-		        // and update their transform hint.
-		        //
-		        // If a layer is visible only on a single display, then that
-		        // display is used to calculate the hint, otherwise we use the
-		        // default display.
-		        //
-		        // NOTE: we do this here, rather than in rebuildLayerStacks() so that
-		        // the hint is set before we acquire a buffer from the surface texture.
-		        //
-		        // NOTE: layer transactions have taken place already, so we use their
-		        // drawing state. However, SurfaceFlinger's own transaction has not
-		        // happened yet, so we must use the current state layer list
-		        // (soon to become the drawing state list).
-		        //
-		        sp<const DisplayDevice> disp;
-		        uint32_t currentlayerStack = 0;
-		        for (size_t i=0; i<count; i++) {
-		            // NOTE: we rely on the fact that layers are sorted by
-		            // layerStack first (so we don't have to traverse the list
-		            // of displays for every layer).
-		            const sp<Layer>& layer(currentLayers[i]);
-		            uint32_t layerStack = layer->getDrawingState().layerStack;
-		            if (i==0 || currentlayerStack != layerStack) {
-		                currentlayerStack = layerStack;
-		                // figure out if this layerstack is mirrored
-		                // (more than one display) if so, pick the default display,
-		                // if not, pick the only display it's on.
-		                disp.clear();
-		                for (size_t dpy=0 ; dpy<mDisplays.size() ; dpy++) {
-		                    sp<const DisplayDevice> hw(mDisplays[dpy]);
-		                    if (hw->getLayerStack() == currentlayerStack) {
-		                        if (disp == NULL) {
-		                            disp = hw;
-		                        } else {
-		                            disp = NULL;
-		                            break;
-		                        }
-		                    }
-		                }
-		            }
-		            if (disp == NULL) {
-		                // NOTE: TEMPORARY FIX ONLY. Real fix should cause layers to
-		                // redraw after transform hint changes. See bug 8508397.
-		
-		                // could be null when this layer is using a layerStack
-		                // that is not visible on any display. Also can occur at
-		                // screen off/on times.
-		                disp = getDefaultDisplayDevice();
-		            }
-		            layer->updateTransformHint(disp);
-		        }
-		    }
-		
-		
-		    /*
-		     * Perform our own transaction if needed
-		     */
-		
-		    const LayerVector& layers(mDrawingState.layersSortedByZ);
-		    if (currentLayers.size() > layers.size()) {
-		        // layers have been added
-		        mVisibleRegionsDirty = true;
-		    }
-		
-		    // some layers might have been removed, so
-		    // we need to update the regions they're exposing.
-		    if (mLayersRemoved) {
-		        mLayersRemoved = false;
-		        mVisibleRegionsDirty = true;
-		        const size_t count = layers.size();
-		        for (size_t i=0 ; i<count ; i++) {
-		            const sp<Layer>& layer(layers[i]);
-		            if (currentLayers.indexOf(layer) < 0) {
-		                // this layer is not visible anymore
-		                // TODO: we could traverse the tree from front to back and
-		                //       compute the actual visible region
-		                // TODO: we could cache the transformed region
-		                const Layer::State& s(layer->getDrawingState());
-		                Region visibleReg = s.transform.transform(
-		                        Region(Rect(s.active.w, s.active.h)));
-		                invalidateLayerStack(s.layerStack, visibleReg);
-		            }
-		        }
-		    }
-		
-		    commitTransaction();
-		
-		    updateCursorAsync();
-		}
+	void SurfaceFlinger::handleTransactionLocked(uint32_t transactionFlags)
+	{
+	    const LayerVector& currentLayers(mCurrentState.layersSortedByZ);
+	    const size_t count = currentLayers.size();
+	
+	    /*
+	     * Traversal of the children
+	     * (perform the transaction for each of them if needed)
+	     */
+	
+	    if (transactionFlags & eTraversalNeeded) {
+	        for (size_t i=0 ; i<count ; i++) {
+	            const sp<Layer>& layer(currentLayers[i]);
+	            uint32_t trFlags = layer->getTransactionFlags(eTransactionNeeded);
+	            if (!trFlags) continue;
+	
+	            const uint32_t flags = layer->doTransaction(0);
+	            if (flags & Layer::eVisibleRegion)
+	                mVisibleRegionsDirty = true;
+	        }
+	    }
+	
+	    /*
+	     * Perform display own transactions if needed
+	     */
+	
+	    if (transactionFlags & eDisplayTransactionNeeded) {
+	        // here we take advantage of Vector's copy-on-write semantics to
+	        // improve performance by skipping the transaction entirely when
+	        // know that the lists are identical
+	        const KeyedVector<  wp<IBinder>, DisplayDeviceState>& curr(mCurrentState.displays);
+	        const KeyedVector<  wp<IBinder>, DisplayDeviceState>& draw(mDrawingState.displays);
+	        if (!curr.isIdenticalTo(draw)) {
+	            mVisibleRegionsDirty = true;
+	            const size_t cc = curr.size();
+	                  size_t dc = draw.size();
+	
+	            // find the displays that were removed
+	            // (ie: in drawing state but not in current state)
+	            // also handle displays that changed
+	            // (ie: displays that are in both lists)
+	            for (size_t i=0 ; i<dc ; i++) {
+	                const ssize_t j = curr.indexOfKey(draw.keyAt(i));
+	                if (j < 0) {
+	                    // in drawing state but not in current state
+	                    if (!draw[i].isMainDisplay()) {
+	                        // Call makeCurrent() on the primary display so we can
+	                        // be sure that nothing associated with this display
+	                        // is current.
+	                        const sp<const DisplayDevice> defaultDisplay(getDefaultDisplayDevice());
+	                        defaultDisplay->makeCurrent(mEGLDisplay, mEGLContext);
+	                        sp<DisplayDevice> hw(getDisplayDevice(draw.keyAt(i)));
+	                        if (hw != NULL)
+	                            hw->disconnect(getHwComposer());
+	                        if (draw[i].type < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES)
+	                            mEventThread->onHotplugReceived(draw[i].type, false);
+	                        mDisplays.removeItem(draw.keyAt(i));
+	                    } else {
+	                        ALOGW("trying to remove the main display");
+	                    }
+	                } else {
+	                    // this display is in both lists. see if something changed.
+	                    const DisplayDeviceState& state(curr[j]);
+	                    const wp<IBinder>& display(curr.keyAt(j));
+	                    if (state.surface->asBinder() != draw[i].surface->asBinder()) {
+	                        // changing the surface is like destroying and
+	                        // recreating the DisplayDevice, so we just remove it
+	                        // from the drawing state, so that it get re-added
+	                        // below.
+	                        sp<DisplayDevice> hw(getDisplayDevice(display));
+	                        if (hw != NULL)
+	                            hw->disconnect(getHwComposer());
+	                        mDisplays.removeItem(display);
+	                        mDrawingState.displays.removeItemsAt(i);
+	                        dc--; i--;
+	                        // at this point we must loop to the next item
+	                        continue;
+	                    }
+	
+	                    const sp<DisplayDevice> disp(getDisplayDevice(display));
+	                    if (disp != NULL) {
+	                        if (state.layerStack != draw[i].layerStack) {
+	                            disp->setLayerStack(state.layerStack);
+	                        }
+	                        if ((state.orientation != draw[i].orientation)
+	                                || (state.viewport != draw[i].viewport)
+	                                || (state.frame != draw[i].frame))
+	                        {
+	#ifdef QCOM_BSP
+	                            int orient = state.orientation;
+	                            // Honor the orientation change after boot
+	                            // animation completes and make sure boot
+	                            // animation is shown in panel orientation always.
+	                            if(mBootFinished){
+	                                disp->setProjection(state.orientation,
+	                                        state.viewport, state.frame);
+	                                orient = state.orientation;
+	                            }
+	                            else{
+	                                char property[PROPERTY_VALUE_MAX];
+	                                int panelOrientation =
+	                                        DisplayState::eOrientationDefault;
+	                                if(property_get("persist.panel.orientation",
+	                                            property, "0") > 0){
+	                                    panelOrientation = atoi(property) / 90;
+	                                }
+	                                disp->setProjection(panelOrientation,
+	                                        state.viewport, state.frame);
+	                                orient = panelOrientation;
+	                            }
+	                            // Set the view frame of each display only of its
+	                            // default orientation.
+	                            if(orient == DisplayState::eOrientationDefault and
+	                                    state.frame.isValid()) {
+	                                qdutils::setViewFrame(disp->getHwcDisplayId(),
+	                                    state.frame.left, state.frame.top,
+	                                    state.frame.right, state.frame.bottom);
+	                            }
+	#else
+	                            disp->setProjection(state.orientation,
+	                                state.viewport, state.frame);
+	#endif
+	                        }
+	                        if (state.width != draw[i].width || state.height != draw[i].height) {
+	                            disp->setDisplaySize(state.width, state.height);
+	                        }
+	                    }
+	                }
+	            }
+	
+	            // find displays that were added
+	            // (ie: in current state but not in drawing state)
+	            for (size_t i=0 ; i<cc ; i++) {
+	                if (draw.indexOfKey(curr.keyAt(i)) < 0) {
+	                    const DisplayDeviceState& state(curr[i]);
+	
+	                    sp<DisplaySurface> dispSurface;
+	                    sp<IGraphicBufferProducer> producer;
+	                    sp<IGraphicBufferProducer> bqProducer;
+	                    sp<IGraphicBufferConsumer> bqConsumer;
+	                    BufferQueue::createBufferQueue(&bqProducer, &bqConsumer,
+	                            new GraphicBufferAlloc());
+	
+	                    int32_t hwcDisplayId = -1;
+	                    if (state.isVirtualDisplay()) {
+	                        // Virtual displays without a surface are dormant:
+	                        // they have external state (layer stack, projection,
+	                        // etc.) but no internal state (i.e. a DisplayDevice).
+	                        if (state.surface != NULL) {
+	                            configureVirtualDisplay(hwcDisplayId,
+	                                    dispSurface, producer, state, bqProducer,
+	                                    bqConsumer);
+	                        }
+	                    } else {
+	                        ALOGE_IF(state.surface!=NULL,
+	                                "adding a supported display, but rendering "
+	                                "surface is provided (%p), ignoring it",
+	                                state.surface.get());
+	                        hwcDisplayId = allocateHwcDisplayId(state.type);
+	                        // for supported (by hwc) displays we provide our
+	                        // own rendering surface
+	                        dispSurface = new FramebufferSurface(*mHwc, state.type,
+	                                bqConsumer);
+	                        producer = bqProducer;
+	                    }
+	
+	                    const wp<IBinder>& display(curr.keyAt(i));
+	                    if (dispSurface != NULL && producer != NULL) {
+	                        sp<DisplayDevice> hw = new DisplayDevice(this,
+	                                state.type, hwcDisplayId,
+	                                mHwc->getFormat(hwcDisplayId), state.isSecure,
+	                                display, dispSurface, producer,
+	                                mRenderEngine->getEGLConfig());
+	                        hw->setLayerStack(state.layerStack);
+	                        hw->setProjection(state.orientation,
+	                                state.viewport, state.frame);
+	                        hw->setDisplayName(state.displayName);
+	                        // When a new display device is added update the active
+	                        // config by querying HWC otherwise the default config
+	                        // (config 0) will be used.
+	                        int activeConfig = mHwc->getActiveConfig(hwcDisplayId);
+	                        if (activeConfig >= 0) {
+	                            hw->setActiveConfig(activeConfig);
+	                        }
+	                        mDisplays.add(display, hw);
+	                        if (state.isVirtualDisplay()) {
+	                            if (hwcDisplayId >= 0) {
+	                                mHwc->setVirtualDisplayProperties(hwcDisplayId,
+	                                        hw->getWidth(), hw->getHeight(),
+	                                        hw->getFormat());
+	                            }
+	                        } else {
+	                            mEventThread->onHotplugReceived(state.type, true);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	
+	    if (transactionFlags & (eTraversalNeeded|eDisplayTransactionNeeded)) {
+	        // The transform hint might have changed for some layers
+	        // (either because a display has changed, or because a layer
+	        // as changed).
+	        //
+	        // Walk through all the layers in currentLayers,
+	        // and update their transform hint.
+	        //
+	        // If a layer is visible only on a single display, then that
+	        // display is used to calculate the hint, otherwise we use the
+	        // default display.
+	        //
+	        // NOTE: we do this here, rather than in rebuildLayerStacks() so that
+	        // the hint is set before we acquire a buffer from the surface texture.
+	        //
+	        // NOTE: layer transactions have taken place already, so we use their
+	        // drawing state. However, SurfaceFlinger's own transaction has not
+	        // happened yet, so we must use the current state layer list
+	        // (soon to become the drawing state list).
+	        //
+	        sp<const DisplayDevice> disp;
+	        uint32_t currentlayerStack = 0;
+	        for (size_t i=0; i<count; i++) {
+	            // NOTE: we rely on the fact that layers are sorted by
+	            // layerStack first (so we don't have to traverse the list
+	            // of displays for every layer).
+	            const sp<Layer>& layer(currentLayers[i]);
+	            uint32_t layerStack = layer->getDrawingState().layerStack;
+	            if (i==0 || currentlayerStack != layerStack) {
+	                currentlayerStack = layerStack;
+	                // figure out if this layerstack is mirrored
+	                // (more than one display) if so, pick the default display,
+	                // if not, pick the only display it's on.
+	                disp.clear();
+	                for (size_t dpy=0 ; dpy<mDisplays.size() ; dpy++) {
+	                    sp<const DisplayDevice> hw(mDisplays[dpy]);
+	                    if (hw->getLayerStack() == currentlayerStack) {
+	                        if (disp == NULL) {
+	                            disp = hw;
+	                        } else {
+	                            disp = NULL;
+	                            break;
+	                        }
+	                    }
+	                }
+	            }
+	            if (disp == NULL) {
+	                // NOTE: TEMPORARY FIX ONLY. Real fix should cause layers to
+	                // redraw after transform hint changes. See bug 8508397.
+	
+	                // could be null when this layer is using a layerStack
+	                // that is not visible on any display. Also can occur at
+	                // screen off/on times.
+	                disp = getDefaultDisplayDevice();
+	            }
+	            layer->updateTransformHint(disp);
+	        }
+	    }
+	
+	
+	    /*
+	     * Perform our own transaction if needed
+	     */
+	
+	    const LayerVector& layers(mDrawingState.layersSortedByZ);
+	    if (currentLayers.size() > layers.size()) {
+	        // layers have been added
+	        mVisibleRegionsDirty = true;
+	    }
+	
+	    // some layers might have been removed, so
+	    // we need to update the regions they're exposing.
+	    if (mLayersRemoved) {
+	        mLayersRemoved = false;
+	        mVisibleRegionsDirty = true;
+	        const size_t count = layers.size();
+	        for (size_t i=0 ; i<count ; i++) {
+	            const sp<Layer>& layer(layers[i]);
+	            if (currentLayers.indexOf(layer) < 0) {
+	                // this layer is not visible anymore
+	                // TODO: we could traverse the tree from front to back and
+	                //       compute the actual visible region
+	                // TODO: we could cache the transformed region
+	                const Layer::State& s(layer->getDrawingState());
+	                Region visibleReg = s.transform.transform(
+	                        Region(Rect(s.active.w, s.active.h)));
+	                invalidateLayerStack(s.layerStack, visibleReg);
+	            }
+	        }
+	    }
+	
+	    commitTransaction();
+	
+	    updateCursorAsync();
+	}
 这里处理3中情况，过程类似，我们只看eTraversalNeeded这种情况。
 
- 	uint32_t trFlags = layer->getTransactionFlags(eTransactionNeeded);
+	uint32_t trFlags = layer->getTransactionFlags(eTransactionNeeded);
+
 获取各个layer的标志位，然后做const uint32_t flags = layer->doTransaction(0);的操作各layer计算各自的可见区域，mVisibleRegionsDirty记录可见区域变化。
 以下代码：
+
 	mCurrentState.layersSortedByZ
+
 surfaceFlinger有2个记录layer变化的全局变量
 	
 	State mDrawingState;
 	State mCurrentState;
+	
 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
 这个变量记录了所有的layer。
-我们来看下一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下  一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下  一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
-我们来看下 一个记录上一次的状态，后者记录当前的状态，这样就可以判断layer的变化状态。layersSortedByZ 可见，layer是通过Z-order排列的。
-这个变量记录了所有的layer。
 我们来看下
+	
+	uint32_t Layer::doTransaction(uint32_t flags) {
+	    //ATRACE_CALL(); 
+	    const Layer::State& s(getDrawingState());
+	    const Layer::State& c(getCurrentState());
+	
+	    const bool sizeChanged = (c.requested.w != s.requested.w) ||
+	                             (c.requested.h != s.requested.h);
+	
+	    if (sizeChanged) {
+	        // the size changed, we need to ask our client to request a new buffer
+	        ALOGD_IF(DEBUG_RESIZE,
+	                "doTransaction: geometry (layer=%p '%s'), tr=%02x, scalingMode=%d\n"
+	                "  current={ active   ={ wh={%4u,%4u} crop={%4d,%4d,%4d,%4d} (%4d,%4d) }\n"
+	                "            requested={ wh={%4u,%4u} crop={%4d,%4d,%4d,%4d} (%4d,%4d) }}\n"
+	                "  drawing={ active   ={ wh={%4u,%4u} crop={%4d,%4d,%4d,%4d} (%4d,%4d) }\n"
+	                "            requested={ wh={%4u,%4u} crop={%4d,%4d,%4d,%4d} (%4d,%4d) }}\n",
+	                this, getName().string(), mCurrentTransform, mCurrentScalingMode,
+	                c.active.w, c.active.h,
+	                c.active.crop.left,
+	                c.active.crop.top,
+	                c.active.crop.right,
+	                c.active.crop.bottom,
+	                c.active.crop.getWidth(),
+	                c.active.crop.getHeight(),
+	                c.requested.w, c.requested.h,
+	                c.requested.crop.left,
+	                c.requested.crop.top,
+	                c.requested.crop.right,
+	                c.requested.crop.bottom,
+	                c.requested.crop.getWidth(),
+	                c.requested.crop.getHeight(),
+	                s.active.w, s.active.h,
+	                s.active.crop.left,
+	                s.active.crop.top,
+	                s.active.crop.right,
+	                s.active.crop.bottom,
+	                s.active.crop.getWidth(),
+	                s.active.crop.getHeight(),
+	                s.requested.w, s.requested.h,
+	                s.requested.crop.left,
+	                s.requested.crop.top,
+	                s.requested.crop.right,
+	                s.requested.crop.bottom,
+	                s.requested.crop.getWidth(),
+	                s.requested.crop.getHeight());
+	
+	        // record the new size, form this point on, when the client request
+	        // a buffer, it'll get the new size.
+	        mSurfaceFlingerConsumer->setDefaultBufferSize(
+	                c.requested.w, c.requested.h);
+	    }
+	
+	    if (!isFixedSize()) {
+	
+	        const bool resizePending = (c.requested.w != c.active.w) ||
+	                                   (c.requested.h != c.active.h);
+	
+	        if (resizePending) {
+	            // don't let Layer::doTransaction update the drawing state
+	            // if we have a pending resize, unless we are in fixed-size mode.
+	            // the drawing state will be updated only once we receive a buffer
+	            // with the correct size.
+	            //
+	            // in particular, we want to make sure the clip (which is part
+	            // of the geometry state) is latched together with the size but is
+	            // latched immediately when no resizing is involved.
+	
+	            flags |= eDontUpdateGeometryState;
+	        }
+	    }
+	
+	    // always set active to requested, unless we're asked not to
+	    // this is used by Layer, which special cases resizes.
+	    if (flags & eDontUpdateGeometryState)  {
+	    } else {
+	        Layer::State& editCurrentState(getCurrentState());
+	        editCurrentState.active = c.requested;
+	    }
+	
+	    if (s.active != c.active) {
+	        // invalidate and recompute the visible regions if needed
+	        flags |= Layer::eVisibleRegion;
+	    }
+	
+	    if (c.sequence != s.sequence) {
+	        // invalidate and recompute the visible regions if needed
+	        flags |= eVisibleRegion;
+	        this->contentDirty = true;
+	
+	        // we may use linear filtering, if the matrix scales us
+	        const uint8_t type = c.transform.getType();
+	        mNeedsFiltering = (!c.transform.preserveRects() ||
+	                (type >= Transform::SCALE));
+	    }
+	
+	    // Commit the transaction
+	    commitTransaction();
+	    return flags;
+	}
+首先判断size是否有修改,然后
+
+	mSurfaceFlingerConsumer->setDefaultBufferSize
+
+重新获取大小。
+
+	if (c.sequence != s.sequence) {
+        // invalidate and recompute the visible regions if needed
+        flags |= eVisibleRegion;
+
+Sequence是个什么东西？
+
+当Layer的position，Zorder，alpha,matrix,transparent region,flags,crops.等发生变化的时候，sequence就会自增。
+也就是，当这些属性发生变化是，页面在Vsync信号触发的时候，根据sequence来判断是否需要属性页面。
+新增layer，对比2个state中的layer队列，就可以知道新增的layer。
+移除layer，也是比较2个layer队列，就可以找到移除的layer。提交transaction，主要就是同步2个state。然后currentstate继续跟踪layer变化，如此往复。
+
+Vsync 是SurfaceFlinger模块最核心的概念，所以这块将会分多次讲解。
+
+## 9.Vsync第二部分  
+
+在上一篇中我们讲到，视图的刷新需要很多步骤，
+	
+	void SurfaceFlinger::handleMessageRefresh() {
+	    ATRACE_CALL();
+	    preComposition();　　//合成前的准备
+	    rebuildLayerStacks();//重新建立layer堆栈
+	    setUpHWComposer();//HWComposer的设定
+	#ifdef QCOM_BSP
+	    setUpTiledDr();
+	#endif
+	    doDebugFlashRegions();
+	    doComposition();　　//正式合成工作
+	    postComposition();　//合成的后期工作
+	}
+
+本文将继续分析这些过程。
+
+### 9.1 handlerMessageInvalidate  
+
+invalidate 字面意思就是使无效，更进一步就是当前的buffer已经无效，请刷新界面。
+
+啥也没干，buffer已经无效，我换下一个，就是handlePageFlip
+
+	void SurfaceFlinger::handleMessageInvalidate() {
+	    ATRACE_CALL();
+	    handlePageFlip();
+	}
+再来看这个函数：handlePageFlip
+	
+	bool SurfaceFlinger::handlePageFlip()
+	{
+	    Region dirtyRegion;
+	
+	    bool visibleRegions = false;
+	    const LayerVector& layers(mDrawingState.layersSortedByZ);
+	    bool frameQueued = false;
+	
+	    // Store the set of layers that need updates. This set must not change as
+	    // buffers are being latched, as this could result in a deadlock.
+	    // Example: Two producers share the same command stream and:
+	    // 1.) Layer 0 is latched
+	    // 2.) Layer 0 gets a new frame
+	    // 2.) Layer 1 gets a new frame
+	    // 3.) Layer 1 is latched.
+	    // Display is now waiting on Layer 1's frame, which is behind layer 0's
+	    // second frame. But layer 0's second frame could be waiting on display.
+	    Vector<Layer*> layersWithQueuedFrames;
+	    for (size_t i = 0, count = layers.size(); i<count ; i++) {
+	        const sp<Layer>& layer(layers[i]);
+	        if (layer->hasQueuedFrame()) {
+	            frameQueued = true;
+	            if (layer->shouldPresentNow(mPrimaryDispSync)) {
+	                layersWithQueuedFrames.push_back(layer.get());
+	            }
+	        }
+	    }
+	    for (size_t i = 0, count = layersWithQueuedFrames.size() ; i<count ; i++) {
+	        Layer* layer = layersWithQueuedFrames[i];
+	        const Region dirty(layer->latchBuffer(visibleRegions));
+	        const Layer::State& s(layer->getDrawingState());
+	        invalidateLayerStack(s.layerStack, dirty);
+	    }
+	
+	    mVisibleRegionsDirty |= visibleRegions;
+	
+	    // If we will need to wake up at some time in the future to deal with a
+	    // queued frame that shouldn't be displayed during this vsync period, wake
+	    // up during the next vsync period to check again.
+	    if (frameQueued && layersWithQueuedFrames.empty()) {
+	        signalLayerUpdate();
+	    }
+	
+	    // Only continue with the refresh if there is actually new work to do
+	    return !layersWithQueuedFrames.empty();
+	}
+	
+@step1:layer->latchBuffer(visibleRegions) 通过该函数锁定各layer的缓冲区。可以理解这个函数一定与BufferQueue有关。
+
+	status_t updateResult = mSurfaceFlingerConsumer->updateTexImage(&r,
+                mFlinger->mPrimaryDispSync);
+上面是latchBuffer的核心语句。SurfaceFlingerConsumer前文已经提过，是client端操作bufferqueue的一个端口。所以这个函数一定是操作bufferqueue的。
+
+
+	// Acquire the next buffer.
+    // In asynchronous mode the list is guaranteed to be one buffer
+    // deep, while in synchronous mode we use the oldest buffer.
+    err = acquireBufferLocked(&item, computeExpectedPresent(dispSync));
+    if (err != NO_ERROR) {
+        if (err == BufferQueue::NO_BUFFER_AVAILABLE) {
+            err = NO_ERROR;
+        } else if (err == BufferQueue::PRESENT_LATER) {
+            // return the error, without logging
+        } else {
+            ALOGE("updateTexImage: acquire failed: %s (%d)",
+                strerror(-err), err);
+        }
+        return err;
+    }
+
+
+    // We call the rejecter here, in case the caller has a reason to
+    // not accept this buffer.  This is used by SurfaceFlinger to
+    // reject buffers which have the wrong size
+    int buf = item.mBuf;
+    if (rejecter && rejecter->reject(mSlots[buf].mGraphicBuffer, item)) {
+        releaseBufferLocked(buf, mSlots[buf].mGraphicBuffer, EGL_NO_SYNC_KHR);
+        return NO_ERROR;
+    }
+
+    // Release the previous buffer.
+    err = updateAndReleaseLocked(item);
+    if (err != NO_ERROR) {
+        return err;
+    }
+
+看了注释，基本解释了大体的过程。
+
+1)  请求新的buffer
+
+2）通过rejecter来判断申请的buffer是否满足surfaceflinger的要求。
+
+3）释放之前的buffer
+
+具体流程可以参考如下：
+
+![](http://i.imgur.com/e5N6ZPl.png)
+
+@step2：SurfaceFlinger:invalidateLayerStack来更新各个区域。
+
+### 9.2 preComposition 合成前的准备 
+
+ 首先来看2个Vsync Rate相关的代码：
+
+	virtual void setVsyncRate(uint32_t count)
+	virtual void requestNextVsync() 
+当count为1时，表示每个信号都要报告，当count =2 时，表示信号 一个间隔一个报告，当count =0时，表示不自动报告，除非主动触发requestNextVsync
+
+	void SurfaceFlinger::preComposition()
+	{
+	    bool needExtraInvalidate = false;
+	    const LayerVector& layers(mDrawingState.layersSortedByZ);
+	    const size_t count = layers.size();
+	    for (size_t i=0 ; i<count ; i++) {
+	        if (layers[i]->onPreComposition()) {
+	            needExtraInvalidate = true;
+	        }
+	    }
+	    if (needExtraInvalidate) {
+	        signalLayerUpdate();
+	    }
+	}
+代码很简单，其实一共就3步，
+
+1）获取全部的layer
+
+2）每个layer onPrecomposition
+
+3) layer update
+
+	bool Layer::onPreComposition() {
+	    mRefreshPending = false;
+	    return mQueuedFrames > 0 || mSidebandStreamChanged;
+	}
+也就是说，当layer里存放被queue的frame以后，就会出发layer update.
+
+	void SurfaceFlinger::signalLayerUpdate() {
+	    mEventQueue.invalidate();
+	}
+最终会调用：
+
+	void EventThread::Connection::requestNextVsync() {
+	    mEventThread->requestNextVsync(this);
+	}
+
+	void EventThread::requestNextVsync(
+	        const sp<EventThread::Connection>& connection) {
+	    Mutex::Autolock _l(mLock);
+	    if (connection->count < 0) {
+	        connection->count = 0;
+	        mCondition.broadcast();//通知对vsync感兴趣的类
+	    }
+	}
+
+那么谁在等待这个broadcast呢？
+还是EventThread
+
+	void EventThread::onVSyncEvent(nsecs_t timestamp) {
+	    Mutex::Autolock _l(mLock);
+	    mVSyncEvent[0].header.type = DisplayEventReceiver::DISPLAY_EVENT_VSYNC;
+	    mVSyncEvent[0].header.id = 0;
+	    mVSyncEvent[0].header.timestamp = timestamp;
+	    mVSyncEvent[0].vsync.count++;
+	    mCondition.broadcast();
+	}
+
+
+### 9.3可见区域rebuildlayerStack 
+
+	void SurfaceFlinger::rebuildLayerStacks() {
+	#ifdef QCOM_BSP
+	    char prop[PROPERTY_VALUE_MAX];
+	    property_get("sys.extended_mode", prop, "0");
+	    sExtendedMode = atoi(prop) ? true : false;
+	#endif
+	    // rebuild the visible layer list per screen
+	    if (CC_UNLIKELY(mVisibleRegionsDirty)) {
+	        ATRACE_CALL();
+	        mVisibleRegionsDirty = false;
+	        invalidateHwcGeometry();
+	
+	        const LayerVector& layers(mDrawingState.layersSortedByZ);
+	        for (size_t dpy=0 ; dpy<mDisplays.size() ; dpy++) {
+	            Region opaqueRegion;
+	            Region dirtyRegion;
+	            Vector< sp<Layer> > layersSortedByZ;
+	            const sp<DisplayDevice>& hw(mDisplays[dpy]);
+	            const Transform& tr(hw->getTransform());
+	            const Rect bounds(hw->getBounds());
+	            int dpyId = hw->getHwcDisplayId();
+	            if (hw->isDisplayOn()) {
+	                SurfaceFlinger::computeVisibleRegions(dpyId, layers,
+	                        hw->getLayerStack(), dirtyRegion, opaqueRegion);
+	
+	                const size_t count = layers.size();
+	                for (size_t i=0 ; i<count ; i++) {
+	                    const sp<Layer>& layer(layers[i]);
+	                    const Layer::State& s(layer->getDrawingState());
+	                    Region drawRegion(tr.transform(
+	                            layer->visibleNonTransparentRegion));
+	                    drawRegion.andSelf(bounds);
+	                    if (!drawRegion.isEmpty()) {
+	                        layersSortedByZ.add(layer);
+	                    }
+	                }
+	            }
+	            hw->setVisibleLayersSortedByZ(layersSortedByZ);
+	            hw->undefinedRegion.set(bounds);
+	            hw->undefinedRegion.subtractSelf(tr.transform(opaqueRegion));
+	            hw->dirtyRegion.orSelf(dirtyRegion);
+	        }
+	    }
+	}
+
+前文提到mVisibleRegionsDirty这个变量是标记要刷新的可见区域的，我们按字面意思解释下：脏的可见区域，顾名思义，这就是要刷新的区域，因为buffer已经“脏”了。
+
+@step1：系统的display可能不止一个，存在与mDisplays中。
+
+@step2：computeVisibleRegions这个函数根据所有的layer状态，得到2个重要的变量。opaqueRegion & dirtyRegion
+
+dirtyRegion是需要被刷新的。 opaqueRegion 不透明区域，应为layer是按Z-order排序的，左右排在前面的opaqueRegion 会挡住后面的layer。
+
+@step3：Region drawRegion(tr.transform( layer->visibleNonTransparentRegion));程序需要进一步得出每个layer 绘制的区域。
+
+系统的display（显示器）可能不止一个，但是所有的layer都记录在layersSortedByZ里面。记录每个layer属于那个display的变量是 hw->getLayerStack()
+
+@step4：将结果保存到hw中。
+
+这里的不透明区域 是很有意义的一个概念，就是我们在Z-order 上，越靠近用户的时候，值越大，所以是递减操作。
+
+### 9.4 setUpHWComposer 搭建环境 
+
+用于合成surface的功能模块可以有2个，OpenGL ES & HWC，它的管理实在HWC里面实现的。
+
+setUpHWComposer 总的来说就干了3件事情。
+
+1）构造Worklist，并且给DisplayData:list 申请空间
+
+2）填充各layer数据
+
+3）报告HWC（有其他地方决定使用那个）
+ 
+### 9.5 doCompostion  
+
+关键地方来了，上面的setUpHWComposer 只是交给HWC来负责显示，真正显示的地方就在这里。
+
+1）如何合成
+
+2）如何显示到屏幕上
+ 
+![](http://i.imgur.com/BBsonhs.png)
+
+合成的流程大体如上图。
+
+有了概念后，分析源码：
+	
+	void SurfaceFlinger::doComposition() {
+	    ATRACE_CALL();
+	    const bool repaintEverything = android_atomic_and(0, &mRepaintEverything);
+	    for (size_t dpy=0 ; dpy<mDisplays.size() ; dpy++) {
+	        const sp<DisplayDevice>& hw(mDisplays[dpy]);
+	        if (hw->isDisplayOn()) {
+	            // transform the dirty region into this screen's coordinate space
+	            const Region dirtyRegion(hw->getDirtyRegion(repaintEverything));
+	
+	            // repaint the framebuffer (if needed)
+	            doDisplayComposition(hw, dirtyRegion);
+	
+	            ++mActiveFrameSequence;
+	
+	            hw->dirtyRegion.clear();
+	            hw->flip(hw->swapRegion);
+	            hw->swapRegion.clear();
+	        }
+	        // inform the h/w that we're done compositing
+	        hw->compositionComplete();
+	    }
+	    postFramebuffer();
+	}
+
+变量mRepaintEverything用于说明，是否需要全部重绘所有内容。如果为true的化，那么dirtyRegion就是displaydevice的 width & height构成的RECT。
+
+否则由dirtyRegion转换而来。
+
+doDisplayComposition是每个Display来处理，有可能会用到OpenGL 的接口来交换buffer。
+
+hw->compositionComplete(); 通知HWC合成结束了。
+
+postFramebuffer HWC的Set接口调用。
+
+
+#### 9.5.1 doDisplayComposition 
+
+	void SurfaceFlinger::doDisplayComposition(const sp<const DisplayDevice>& hw,
+	        const Region& inDirtyRegion)
+	{
+	    // We only need to actually compose the display if:
+	    // 1) It is being handled by hardware composer, which may need this to
+	    //    keep its virtual display state machine in sync, or
+	    // 2) There is work to be done (the dirty region isn't empty)
+	    bool isHwcDisplay = hw->getHwcDisplayId() >= 0;
+	    if (!isHwcDisplay && inDirtyRegion.isEmpty()) {
+	        return;
+	    }
+	
+	    Region dirtyRegion(inDirtyRegion);
+	
+	    // compute the invalid region
+	    hw->swapRegion.orSelf(dirtyRegion);
+	
+	    uint32_t flags = hw->getFlags();
+	    if (flags & DisplayDevice::SWAP_RECTANGLE) {
+	        // we can redraw only what's dirty, but since SWAP_RECTANGLE only
+	        // takes a rectangle, we must make sure to update that whole
+	        // rectangle in that case
+	        dirtyRegion.set(hw->swapRegion.bounds());
+	    } else {
+	        if (flags & DisplayDevice::PARTIAL_UPDATES) {
+	            // We need to redraw the rectangle that will be updated
+	            // (pushed to the framebuffer).
+	            // This is needed because PARTIAL_UPDATES only takes one
+	            // rectangle instead of a region (see DisplayDevice::flip())
+	            dirtyRegion.set(hw->swapRegion.bounds());
+	        } else {
+	            // we need to redraw everything (the whole screen)
+	            dirtyRegion.set(hw->bounds());
+	            hw->swapRegion = dirtyRegion;
+	        }
+	    }
+	
+	    if (CC_LIKELY(!mDaltonize && !mHasColorMatrix)) {
+	        if (!doComposeSurfaces(hw, dirtyRegion)) return;
+	    } else {
+	        RenderEngine& engine(getRenderEngine());
+	        mat4 colorMatrix = mColorMatrix;
+	        if (mDaltonize) {
+	            colorMatrix = colorMatrix * mDaltonizer();
+	        }
+	        mat4 oldMatrix = engine.setupColorTransform(colorMatrix);
+	        doComposeSurfaces(hw, dirtyRegion);
+	        engine.setupColorTransform(oldMatrix);
+	    }
+	
+	    // update the swap region and clear the dirty region
+	    hw->swapRegion.orSelf(dirtyRegion);
+	
+	    // swap buffers (presentation)
+	    hw->swapBuffers(getHwComposer());
+	}
+
+传入的参数inDirtyRegion，这就是要刷新的“脏”区域，but，我们的刷新机制，决定了必须是矩形的区域。
+
+So，需要一个最小的矩形，能够包裹inDirtyRegion的区域。
+
+SWAP_RECTANGLE：系统支持软件层面的部分刷新，就需要计算这个最小矩形。
+
+PARTIAL_UPDATES：硬件层面的部分刷新，同理需要这个最小矩形。
+
+最后就是重绘这个区域。 
+		
+	bool SurfaceFlinger::doComposeSurfaces(const sp<const DisplayDevice>& hw, const Region& dirty)
+	{
+	    RenderEngine& engine(getRenderEngine());
+	    const int32_t id = hw->getHwcDisplayId();
+	    HWComposer& hwc(getHwComposer());
+	    HWComposer::LayerListIterator cur = hwc.begin(id);
+	    const HWComposer::LayerListIterator end = hwc.end(id);
+	
+	    Region clearRegion;
+	    bool hasGlesComposition = hwc.hasGlesComposition(id);
+	    const bool hasHwcComposition = hwc.hasHwcComposition(id);
+	    if (hasGlesComposition) {
+	        if (!hw->makeCurrent(mEGLDisplay, mEGLContext)) {
+	            ALOGW("DisplayDevice::makeCurrent failed. Aborting surface composition for display %s",
+	                  hw->getDisplayName().string());
+	            eglMakeCurrent(mEGLDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+	            if(!getDefaultDisplayDevice()->makeCurrent(mEGLDisplay, mEGLContext)) {
+	              ALOGE("DisplayDevice::makeCurrent on default display failed. Aborting.");
+	            }
+	            return false;
+	        }
+	
+	        // Never touch the framebuffer if we don't have any framebuffer layers
+	        if (hasHwcComposition) {
+	            // when using overlays, we assume a fully transparent framebuffer
+	            // NOTE: we could reduce how much we need to clear, for instance
+	            // remove where there are opaque FB layers. however, on some
+	            // GPUs doing a "clean slate" clear might be more efficient.
+	            // We'll revisit later if needed.
+	            if(!(mGpuTileRenderEnable && (mDisplays.size()==1)))
+	                engine.clearWithColor(0, 0, 0, 0);
+	        } else {
+	            // we start with the whole screen area
+	            const Region bounds(hw->getBounds());
+	
+	            // we remove the scissor part
+	            // we're left with the letterbox region
+	            // (common case is that letterbox ends-up being empty)
+	            const Region letterbox(bounds.subtract(hw->getScissor()));
+	
+	            // compute the area to clear
+	            Region region(hw->undefinedRegion.merge(letterbox));
+	
+	            // but limit it to the dirty region
+	            region.andSelf(dirty);
+	
+	
+	            // screen is already cleared here
+	#ifdef QCOM_BSP
+	            clearRegion.clear();
+	            if(mGpuTileRenderEnable && (mDisplays.size()==1)) {
+	                clearRegion = region;
+	                if (cur == end) {
+	                    drawWormhole(hw, region);
+	                } else if(mCanUseGpuTileRender) {
+	                   /* If GPUTileRect DR optimization on clear only the UnionDR
+	                    * (computed by computeTiledDr) which is the actual region
+	                    * that will be drawn on FB in this cycle.. */
+	                    clearRegion = clearRegion.andSelf(Region(mUnionDirtyRect));
+	                }
+	            } else
+	#endif
+	            {
+	                if (!region.isEmpty()) {
+	                    if (cur != end) {
+	                        if (cur->getCompositionType() != HWC_BLIT)
+	                            // can happen with SurfaceView
+	                            drawWormhole(hw, region);
+	                    } else
+	                        drawWormhole(hw, region);
+	                }
+	            }
+	        }
+	
+	        if (hw->getDisplayType() != DisplayDevice::DISPLAY_PRIMARY) {
+	            // just to be on the safe side, we don't set the
+	            // scissor on the main display. It should never be needed
+	            // anyways (though in theory it could since the API allows it).
+	            const Rect& bounds(hw->getBounds());
+	            const Rect& scissor(hw->getScissor());
+	            if (scissor != bounds) {
+	                // scissor doesn't match the screen's dimensions, so we
+	                // need to clear everything outside of it and enable
+	                // the GL scissor so we don't draw anything where we shouldn't
+	
+	                // enable scissor for this frame
+	                const uint32_t height = hw->getHeight();
+	                engine.setScissor(scissor.left, height - scissor.bottom,
+	                        scissor.getWidth(), scissor.getHeight());
+	            }
+	        }
+	    }
+	
+	    /*
+	     * and then, render the layers targeted at the framebuffer
+	     */
+	
+	    const Vector< sp<Layer> >& layers(hw->getVisibleLayersSortedByZ());
+	    const size_t count = layers.size();
+	    const Transform& tr = hw->getTransform();
+	    if (cur != end) {
+	        // we're using h/w composer
+	#ifdef QCOM_BSP
+	        int fbWidth= hw->getWidth();
+	        int fbHeight= hw->getHeight();
+	        /* if GPUTileRender optimization property is on & can be used
+	         * i) Enable EGL_SWAP_PRESERVED flag
+	         * ii) do startTile with union DirtyRect
+	         * else , Disable EGL_SWAP_PRESERVED */
+	        if(mGpuTileRenderEnable && (mDisplays.size()==1)) {
+	            if(mCanUseGpuTileRender && !mUnionDirtyRect.isEmpty()) {
+	                hw->eglSwapPreserved(true);
+	                Rect dr = mUnionDirtyRect;
+	                engine.startTileComposition(dr.left, (fbHeight-dr.bottom),
+	                      (dr.right-dr.left),
+	                      (dr.bottom-dr.top), 0);
+	            } else {
+	                // Un Set EGL_SWAP_PRESERVED flag, if no tiling required.
+	                hw->eglSwapPreserved(false);
+	            }
+	            // DrawWormHole/Any Draw has to be within startTile & EndTile
+	            if (hasGlesComposition) {
+	                if (hasHwcComposition) {
+	                    if(mCanUseGpuTileRender && !mUnionDirtyRect.isEmpty()) {
+	                        const Rect& scissor(mUnionDirtyRect);
+	                        engine.setScissor(scissor.left,
+	                              hw->getHeight()- scissor.bottom,
+	                              scissor.getWidth(), scissor.getHeight());
+	                        engine.clearWithColor(0, 0, 0, 0);
+	                        engine.disableScissor();
+	                    } else {
+	                        engine.clearWithColor(0, 0, 0, 0);
+	                    }
+	                } else {
+	                    if (cur->getCompositionType() != HWC_BLIT &&
+	                          !clearRegion.isEmpty()) {
+	                        drawWormhole(hw, clearRegion);
+	                    }
+	                }
+	            }
+	        }
+	#endif
+	
+	        for (size_t i=0 ; i<count && cur!=end ; ++i, ++cur) {
+	            const sp<Layer>& layer(layers[i]);
+	            const Region clip(dirty.intersect(tr.transform(layer->visibleRegion)));
+	            if (!clip.isEmpty()) {
+	                switch (cur->getCompositionType()) {
+	                    case HWC_CURSOR_OVERLAY:
+	                    case HWC_OVERLAY: {
+	                        const Layer::State& state(layer->getDrawingState());
+	                        if ((cur->getHints() & HWC_HINT_CLEAR_FB)
+	                                && i
+	                                && layer->isOpaque(state) && (state.alpha == 0xFF)
+	                                && hasGlesComposition) {
+	                            // never clear the very first layer since we're
+	                            // guaranteed the FB is already cleared
+	                            layer->clearWithOpenGL(hw, clip);
+	                        }
+	                        break;
+	                    }
+	                    case HWC_FRAMEBUFFER: {
+	                        layer->draw(hw, clip);
+	                        break;
+	                    }
+	                    case HWC_BLIT:
+	                        //Do nothing
+	                        break;
+	                    case HWC_FRAMEBUFFER_TARGET: {
+	                        // this should not happen as the iterator shouldn't
+	                        // let us get there.
+	                        ALOGW("HWC_FRAMEBUFFER_TARGET found in hwc list (index=%zu)", i);
+	                        break;
+	                    }
+	                }
+	            }
+	            layer->setAcquireFence(hw, *cur);
+	        }
+	
+	#ifdef QCOM_BSP
+	        // call EndTile, if starTile has been called in this cycle.
+	        if(mGpuTileRenderEnable && (mDisplays.size()==1)) {
+	            if(mCanUseGpuTileRender && !mUnionDirtyRect.isEmpty()) {
+	                engine.endTileComposition(GL_PRESERVE);
+	            }
+	        }
+	#endif
+	    } else {
+	        // we're not using h/w composer
+	        for (size_t i=0 ; i<count ; ++i) {
+	            const sp<Layer>& layer(layers[i]);
+	            const Region clip(dirty.intersect(
+	                    tr.transform(layer->visibleRegion)));
+	            if (!clip.isEmpty()) {
+	                layer->draw(hw, clip);
+	            }
+	        }
+	    }
+	
+	    // disable scissor at the end of the frame
+	    engine.disableScissor();
+	    return true;
+	}
+
+依次分析：hasGlesComposition需要Open GL来合成的layer，hasHwcComposition需要HWC来合成的layer。
+
+这2各变量不是互斥的，有同时存在需要Open GL layer & HWC layer。
+
+hasHwcComposition在2种情况下是true。
+
+1）layer的类型是HWC_Framebuffer的时候，通常情况下是true。
+
+2)cur ==end 核心实现layer->draw 来完成。
+
+3）cur!=end, 将有hwc来实现。
+	
+	{
+	    ATRACE_CALL();
+	
+	    if (CC_UNLIKELY(mActiveBuffer == 0)) {
+	        // the texture has not been created yet, this Layer has
+	        // in fact never been drawn into. This happens frequently with
+	        // SurfaceView because the WindowManager can't know when the client
+	        // has drawn the first time.
+	
+	        // If there is nothing under us, we paint the screen in black, otherwise
+	        // we just skip this update.
+	
+	        // figure out if there is something below us
+	        Region under;
+	        const SurfaceFlinger::LayerVector& drawingLayers(
+	                mFlinger->mDrawingState.layersSortedByZ);
+	        const size_t count = drawingLayers.size();
+	        for (size_t i=0 ; i<count ; ++i) {
+	            const sp<Layer>& layer(drawingLayers[i]);
+	            if (layer.get() == static_cast<Layer const*>(this))
+	                break;
+	            under.orSelf( hw->getTransform().transform(layer->visibleRegion) );
+	        }
+	        // if not everything below us is covered, we plug the holes!
+	        Region holes(clip.subtract(under));
+	        if (!holes.isEmpty()) {
+	            clearWithOpenGL(hw, holes, 0, 0, 0, 1);
+	        }
+	        return;
+	    }
+	
+	    // Bind the current buffer to the GL texture, and wait for it to be
+	    // ready for us to draw into.
+	    status_t err = mSurfaceFlingerConsumer->bindTextureImage();
+	    if (err != NO_ERROR) {
+	        ALOGW("onDraw: bindTextureImage failed (err=%d)", err);
+	        // Go ahead and draw the buffer anyway; no matter what we do the screen
+	        // is probably going to have something visibly wrong.
+	    }
+	
+	    bool blackOutLayer = isProtected() || (isSecure() && !hw->isSecure());
+	
+	    RenderEngine& engine(mFlinger->getRenderEngine());
+	
+	    if (!blackOutLayer) {
+	        // TODO: we could be more subtle with isFixedSize()
+	        const bool useFiltering = getFiltering() || needsFiltering(hw) || isFixedSize();
+	
+	        // Query the texture matrix given our current filtering mode.
+	        float textureMatrix[16];
+	        mSurfaceFlingerConsumer->setFilteringEnabled(useFiltering);
+	        mSurfaceFlingerConsumer->getTransformMatrix(textureMatrix);
+	
+	        if (mSurfaceFlingerConsumer->getTransformToDisplayInverse()) {
+	
+	            /*
+	             * the code below applies the display's inverse transform to the texture transform
+	             */
+	
+	            // create a 4x4 transform matrix from the display transform flags
+	            const mat4 flipH(-1,0,0,0,  0,1,0,0, 0,0,1,0, 1,0,0,1);
+	            const mat4 flipV( 1,0,0,0, 0,-1,0,0, 0,0,1,0, 0,1,0,1);
+	            const mat4 rot90( 0,1,0,0, -1,0,0,0, 0,0,1,0, 1,0,0,1);
+	
+	            mat4 tr;
+	            uint32_t transform = hw->getOrientationTransform();
+	            if (transform & NATIVE_WINDOW_TRANSFORM_ROT_90)
+	                tr = tr * rot90;
+	            if (transform & NATIVE_WINDOW_TRANSFORM_FLIP_H)
+	                tr = tr * flipH;
+	            if (transform & NATIVE_WINDOW_TRANSFORM_FLIP_V)
+	                tr = tr * flipV;
+	
+	            // calculate the inverse
+	            tr = inverse(tr);
+	
+	            // and finally apply it to the original texture matrix
+	            const mat4 texTransform(mat4(static_cast<const float*>(textureMatrix)) * tr);
+	            memcpy(textureMatrix, texTransform.asArray(), sizeof(textureMatrix));
+	        }
+	
+	        // Set things up for texturing.
+	        mTexture.setDimensions(mActiveBuffer->getWidth(), mActiveBuffer->getHeight());
+	        mTexture.setFiltering(useFiltering);
+	        mTexture.setMatrix(textureMatrix);
+	
+	        engine.setupLayerTexturing(mTexture);
+	    } else {
+	        engine.setupLayerBlackedOut();
+	    }
+	    drawWithOpenGL(hw, clip, useIdentityTransform);
+	    engine.disableTexturing();
+	}
+里面关键就是drawwithOpenGL，可见是由Open GL来合成layer。
+
+
+
+
+
+
 
 
 
