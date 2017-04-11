@@ -7,12 +7,9 @@ author:     BY
 header-img: img/post-bg-2015.jpg
 catalog: true
 tags:
-    - 生活
+    - 工作
 ---
-
-> “🙉🙉🙉 ”
-
-
+ 
 ## 前言
 
 BY 的 Blog 就这么开通了。
