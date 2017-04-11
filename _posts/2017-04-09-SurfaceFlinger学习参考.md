@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      SurfaceFlinger 2017
+title:      SurfaceFlinger 学习参考
 subtitle:    SurfaceFlinger, WMY Blog
 date:       2017-04-09
 author:     BY
@@ -2567,6 +2567,7 @@ hasHwcComposition在2种情况下是true。
 	    drawWithOpenGL(hw, clip, useIdentityTransform);
 	    engine.disableTexturing();
 	}
+
 里面关键就是drawwithOpenGL，可见是由Open GL来合成layer。
 
 
