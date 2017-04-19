@@ -17,13 +17,15 @@ tags:
 ## AnyMotion机制  
 
 检测运动的AnyMotionDetector会在DeviceIdleController的onBootPhase阶段初始化：
+
     @Override
     public void onBootPhase(int phase) {
                          。。。。。。。。
 
                 mAnyMotionDetector = new AnyMotionDetector(
                         (PowerManager) getContext().getSystemService(Context.POWER_SERVICE),
-                        mHandler, mSensorManager, this, angleThreshold);  
+                        mHandler, mSensorManager, this, angleThreshold); 
+ 
 在Doze执行完pending阶段后会调用如下程序，检测设备是否运动：
 
 	case STATE_IDLE_PENDING:
@@ -38,6 +40,7 @@ tags:
 	    mLastGenericLocation = null;
 	    mLastGpsLocation = null;
 	    mAnyMotionDetector.checkForAnyMotion();//注意这里开始检测运动 
+
 这里设置运动检测超时alarm方法实现如下：
 
     void scheduleSensingTimeoutAlarmLocked(long delay) {
@@ -60,6 +63,7 @@ tags:
             }
         }
     }; 
+
 因此从上可以看到，在规定的时间内，如果无法确定设备是否运动的话，设备将重新回到Inactive阶段，下面来看检测设备是否运动的checkForAnyMotion方法实现原理。
 
 ### AnyMotionDetector的checkForAnyMotion运动检测机制 
@@ -86,6 +90,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
             }
         }
     }
+
 再来看startOrientationMeasurementLocked方法实现：
 
     private void startOrientationMeasurementLocked() {
@@ -129,6 +134,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
     }; 
 
 ####  1.1 mMeasurementTimeout的实现如下：
+
     private final Runnable mMeasurementTimeout = new Runnable() {
       @Override
       public void run() {
@@ -193,6 +199,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
         }
         return status;
     }
+
 ####  1.4 判断设备位置状态的getStationaryStatus方法实现如下：
 
     /*
@@ -226,6 +233,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
         }
         return RESULT_MOVED;
     }
+
 以上方法主要是通过比较前后两次设备的坐标值差异来判断设备当前的状态，注意监测设备运动状态至少会调用两次运动传感器，因为第一次比较时，上一次的坐标状态mPreviousGravityVector == null；
 假如运动感器确定设备状态后，会回调DeviceIdleController的onAnyMotionResult方法，该方法具体实现如下： 
 
