@@ -109,6 +109,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
             mHandler.sendMessageDelayed(msg, ACCELEROMETER_DATA_TIMEOUT_MILLIS);
         }
     } 
+
 ####  1.1 mListener的实现如下：
 
     private final SensorEventListener mListener = new SensorEventListener() {
@@ -133,7 +134,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
 		.............
     }; 
 
-####  1.1 mMeasurementTimeout的实现如下：
+####  1.2 mMeasurementTimeout的实现如下：
 
     private final Runnable mMeasurementTimeout = new Runnable() {
       @Override
@@ -150,6 +151,7 @@ checkForAnyMotion方法中，首先会判断运动传感器是否在检测中，
           }
       }
   }; 
+
 ####  1.3 stopOrientationMeasurementLocked的实现如下：
 
     private int stopOrientationMeasurementLocked() {
