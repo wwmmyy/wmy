@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      AlarmManagerService Time_tick 2017
-subtitle:    "\"Hello World, Hello Blog\""
+title:      AlarmManagerService Time_tick 
+subtitle:  
 date:       2017-02-04
 author:     BY
 header-img: img/13.jpg
