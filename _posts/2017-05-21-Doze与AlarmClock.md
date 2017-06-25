@@ -25,11 +25,7 @@ tags:
 
 接下来我们看下setAlarmClock的代码实现原理:
 
-<<<<<<< HEAD
 	代码路径：base\core\java\android\app\AlarmManager.java:
-=======
-在base\core\java\android\app\AlarmManager.java:
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
 
     public void setAlarmClock(AlarmClockInfo info, PendingIntent operation) {
         setImpl(RTC_WAKEUP, info.getTriggerTime(), WINDOW_EXACT, 0, 0, operation,
@@ -52,41 +48,27 @@ tags:
     }
 
 通过binder机制，最后会调用对应的AlarmManagerService 的set方法:
-<<<<<<< HEAD
 
 	代码路径：base\services\core\java\com\android\server\AlarmManagerService.java:
-=======
-base\services\core\java\com\android\server\AlarmManagerService.java:
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
-
+ 
     private final IBinder mService = new IAlarmManager.Stub() {
         @Override
         public void set(String callingPackage,
                 int type, long triggerAtTime, long windowLength, long interval, int flags,
                 PendingIntent operation, IAlarmListener directReceiver, String listenerTag,
                 WorkSource workSource, AlarmManager.AlarmClockInfo alarmClock) {
-		.............
-<<<<<<< HEAD
-=======
-
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
+		............. 
           // If this alarm is for an alarm clock, then it must be standalone and we will
             // use it to wake early from idle if needed.
             if (alarmClock != null) {
             //注意：如果设置的是alarmClock类型的alarm，会对其flags添加如下标记，这个在后面的判断很关键
                 flags |= AlarmManager.FLAG_WAKE_FROM_IDLE | AlarmManager.FLAG_STANDALONE;
-<<<<<<< HEAD
+ 
 		.............
         }
 
-=======
-
-		.............
-
-        }
-
-
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
+ 
+ 
 紧接着会走如下代码，判断将此次设置的alarmClock保存到mNextWakeFromIdle中：
 
     private void setImplLocked(Alarm a, boolean rebatching, boolean doValidate) { 
@@ -156,12 +138,8 @@ base\services\core\java\com\android\server\AlarmManagerService.java:
 
 在Doze每次切换状态机的时候会经过如下判断：
 
-<<<<<<< HEAD
-	Doze代码路径： base\services\core\java\com\android\server\DeviceIdleController.java
-=======
-Doze代码路径： base\services\core\java\com\android\server\DeviceIdleController.java
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
-
+ 	 Doze代码路径： base\services\core\java\com\android\server\DeviceIdleController.jav
+ 
     void stepIdleStateLocked(String reason) {
         。。。。。
         final long now = SystemClock.elapsedRealtime();
@@ -192,10 +170,7 @@ Doze代码路径： base\services\core\java\com\android\server\DeviceIdleControl
 		    return mNextWakeFromIdle != null ? mNextWakeFromIdle.whenElapsed : Long.MAX_VALUE;
 		}
 	}
-<<<<<<< HEAD
-
-=======
->>>>>>> 59f983f059f3719942a773c4bf23fa1a745ea109
+  
 从之前的判断我们知道mNextWakeFromIdle就是最近将要触发的alarmClock的alarm；因此，在doze状态机的切换过程中，最近的alarmClock触发时间如果小于：now+mConstants.MIN_TIME_TO_ALARM时间，那么Doze会直接返回active阶段，状态机不会再往下走，也就不会进入idle；
 
 
