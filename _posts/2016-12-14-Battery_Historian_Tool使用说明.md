@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      battery historian tool 使用说明
+title:      Battery historian tool 使用说明
 subtitle:    
 date:       2016-12-14
 author:     BY
@@ -11,7 +11,7 @@ tags:
 ---
 
 
-# battery historian tool 使用说明 #
+# Battery historian tool 使用说明 #
    
   
 
@@ -28,7 +28,7 @@ tags:
  
 ## 2、打开及相关命令介绍 ##
 
-2.1、打开git bash工具 运行如下命令
+### 2.1、打开git bash工具 运行如下命令 ###
 
  	1、 cd $GOPATH/src/github.com/google/battery-historian 进入其目录下方 
 
@@ -39,16 +39,16 @@ tags:
  	3、检查/battery-historian是否运行，登录网址 http://localhost:9999查看
  
  
-2.2、导出手机的Bugreport日志
+### 2.2、导出手机的Bugreport日志 ###
  
 	1.输入指令 adb bugreport > bugreport.txt导出。
 	2. pwd 显示导出位置
  
-2.3、上传bugreport.txt文件至? [http://localhost:9999](http://localhost:9999)
+### 2.3、上传bugreport.txt文件至? [http://localhost:9999](http://localhost:9999) ###
 
 	退出deepidle的原因,关键字： becomeActiveLocked, reason
 
-2.4、其他说明
+### 2.4、其他说明 ###
 
 	重置命令：adb shell dumpsys batterystats --reset
 
