@@ -3,7 +3,7 @@ layout:     post
 title:      Alarm 和Doze的关系
 subtitle:   Alarm 和Doze idle的关系
 date:       2016-12-13
-author:     BY
+author:     WMY
 header-img: img/02.jpg
 catalog: 	 true
 tags: 
