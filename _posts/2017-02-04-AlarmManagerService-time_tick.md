@@ -3,14 +3,14 @@ layout:     post
 title:      AlarmManagerService Time_tick 
 subtitle:  
 date:       2017-02-04
-author:     BY
+author:     WMY
 header-img: img/13.jpg
 catalog: true
 tags:
     - 工作
 ---
 
-> “🙉🙉🙉 ”
+
 
 
 ## 前言
