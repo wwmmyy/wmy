@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      Doze Sensing
-subtitle:   AnyMotionDetector运动检测机制
+title:      Doze Sensing AnyMotionDetector运动检测机制
+subtitle:   
 date:       2017-02-15
 author:     WMY
 header-img: img/20.jpg
