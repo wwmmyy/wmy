@@ -22,7 +22,7 @@ tags:
 
 接着我们可以在com_android_server_lights_LightsService.cpp 增加该native方法的实现：
 
-frameworks\base\services\core\jni\com_android_server_lights_LightsService.cpp 
+代码位置：frameworks\base\services\core\jni\com_android_server_lights_LightsService.cpp 
 
 	.......... 
 	#include "XXSystemServerApi.h"
@@ -66,7 +66,7 @@ frameworks\base\services\core\jni\com_android_server_lights_LightsService.cpp
 
 接着我们需要将register_android_server_XXFgApp方法添加到onload.cpp，从而新增的方法能够编译并加载到系统中
 
-frameworks\base\services\core\jni\onload.cpp:
+代码位置：frameworks\base\services\core\jni\onload.cpp:
 
 	namespace android {
 		..... 
