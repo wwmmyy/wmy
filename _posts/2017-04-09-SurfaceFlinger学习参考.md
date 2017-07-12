@@ -3,7 +3,7 @@ layout:     post
 title:      SurfaceFlinger 学习参考
 subtitle:   
 date:       2017-04-09
-author:     BY
+author:     WMY
 header-img: img/01.jpg
 catalog: true
 tags:
