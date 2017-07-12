@@ -13,11 +13,7 @@ tags:
 
 
 
-## 前言
-
-WMY 的 Blog 就这么开通了。
-
-后面会整理资料介绍 AlarmManagerService Time_tick的运行机制
+## AlarmManagerService Time_tick运行机制
 
 
 ##1、TIME_TICK alarm的初始化:
