@@ -3,7 +3,7 @@ layout:     post
 title:      Doze 与 AlarmClock 的关系
 subtitle:    
 date:       2017-5-21
-author:     BY
+author:     WMY
 header-img: img/01.jpg
 catalog: 	 true
 tags: 
