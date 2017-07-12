@@ -3,7 +3,7 @@ layout:     post
 title:      Battery historian tool 使用说明
 subtitle:    
 date:       2016-12-14
-author:     BY
+author:     WMY
 header-img: img/11.jpg
 catalog: 	 true
 tags: 
