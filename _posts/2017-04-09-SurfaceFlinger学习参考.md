@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      SurfaceFlinger 学习参考
-subtitle:    SurfaceFlinger, WMY Blog
+subtitle:   
 date:       2017-04-09
 author:     BY
 header-img: img/01.jpg
