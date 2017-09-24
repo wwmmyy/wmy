@@ -165,7 +165,7 @@ mMethods: 方法个数
 	}	
  
 	//方法数组，正是这个，可以动态调用任意 native 方法
-	JNINativeMethod nativeMethod[] = {{{"getJniAdd", "(II)I;", (void *) getJniAddNative} };	
+	JNINativeMethod nativeMethod[] = {{"getJniAdd", "(II)I;", (void *) getJniAddNative} };	
 	
 	static int registerNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *gMethods,
 	                                 int numMethods) {
