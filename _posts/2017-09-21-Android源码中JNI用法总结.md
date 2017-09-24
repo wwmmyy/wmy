@@ -114,7 +114,7 @@ e. AndroidRuntime::registerNativeMethods中最终调用jniRegisterNativeMethods�
 
 我们看上面定义的结构体数组：
 
-	JNINativeMethod nativeMethod[] = {{"getJniAdd", "(II)I;", (void *) getJniAddNative}};
+	JNINativeMethod nativeMethod[] = \{\{"getJniAdd", "(II)I;", (void *) getJniAddNative\}\};
  
 可以看出，里面有一个成员，该成员第一个参数 "getJniAdd",java 函数名；第二个参数“(II)I;",是签名符号，对应java中的native方法：int getJniAdd(int a, int b)的参数及返回值。第三个参数就是要调用的 native 方法。
 
@@ -165,7 +165,7 @@ mMethods: 方法个数
 	}	
  
 	//方法数组，正是这个，可以动态调用任意 native 方法
-	JNINativeMethod nativeMethod[] = {{"getJniAdd", "(II)I;", (void *) getJniAddNative} };	
+	JNINativeMethod nativeMethod[] = \{\{"detJniAdd", "(II)I;", (void *) getJniAddNative\} \};	
 	
 	static int registerNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *gMethods,
 	                                 int numMethods) {
