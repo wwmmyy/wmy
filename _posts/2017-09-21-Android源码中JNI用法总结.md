@@ -64,9 +64,7 @@ d. 程序运行效率低，因为初次调用native函数时需要根据根据�
 静态注册JNI弊端多多，因此使用动态注册JNI十分有必要。
 
 
-##2、JNI_Onload方式
-
-，类型如下： 
+##2、JNI_Onload方式 
 
 
 ###2.1、动态注册的原理
@@ -201,6 +199,9 @@ mMethods: 方法个数
 	#else
 	typedef const struct JNINativeInterface* JNIEnv;
 	#endif
+
+
+
 
 
 
