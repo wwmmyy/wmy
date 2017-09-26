@@ -49,7 +49,7 @@ c. 在gradle.properties文件中添加：android.useDeprecatedNdk=true
 
 根据生成的头文件中的方法名再用本地的C来实现对应的方法即可。
 
-用C/C++实现完方法后，将(c/c++)文件编译成动态库，点击： Android Studio -->Build -->Make Project 这样会在路径： app --> build-->intermediates -->ndk-->debug-->lib 下面生成各so库文件，将这些库文件拷贝到： app-->src-->main-->jniLibs 文件下，编译工程即可。
+用C/C++实现完方法后，将(c/c++)文件编译成动态库，点击： Android Studio -->Build -->Make Project 这样会在路径： app --> build-->intermediates -->ndk-->debug-->lib 下面生成各so库文件。
 
 **静态注册弊端：**
 
@@ -112,7 +112,7 @@ e. AndroidRuntime::registerNativeMethods中最终调用jniRegisterNativeMethods�
 
 我们看上面定义的结构体数组：
 
-	JNINativeMethod nativeMethod[] = \{\{"getJniAdd", "(II)I;", (void *) getJniAddNative\}\};
+	JNINativeMethod nativeMethod[] = \{\{"getJniAdd", "(II)I", (void *) getJniAddNative\}\};
  
 可以看出，里面有一个成员，该成员第一个参数 "getJniAdd",java 函数名；第二个参数“(II)I;",是签名符号，对应java中的native方法：int getJniAdd(int a, int b)的参数及返回值。第三个参数就是要调用的 native 方法。
 
@@ -163,7 +163,7 @@ mMethods: 方法个数
 	}	
  
 	//方法数组，正是这个，可以动态调用任意 native 方法
-	JNINativeMethod nativeMethod[] = \{\{"detJniAdd", "(II)I;", (void *) getJniAddNative\} \};	
+	JNINativeMethod nativeMethod[] = \{\{"detJniAdd", "(II)I", (void *) getJniAddNative\} \};	
 	
 	static int registerNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *gMethods,
 	                                 int numMethods) {
